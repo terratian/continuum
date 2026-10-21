@@ -2,7 +2,7 @@
 // Copyright (c) 2026 Joshua Sultan (Burlington, NC). All rights reserved.
 // Patent Pending (USPTO 35 U.S.C. § 111(b) & Benelux BOIP i-DEPOT Sealed).
 
-use continuum_core::{ContinuumEnvelope, PayloadType, CONTINUUM_MAGIC_SALT};
+use continuum_core::{ContinuumEnvelope, CONTINUUM_MAGIC_SALT};
 use quinn::{Endpoint, ServerConfig};
 use std::error::Error;
 use std::net::SocketAddr;
@@ -32,7 +32,8 @@ impl ContinuumTransportNode {
 
         server_crypto.alpn_protocols = vec![b"continuum-quic-v1".to_vec()];
 
-        let server_config = ServerConfig::with_crypto(Arc::new(server_crypto));
+        let quic_server_crypto = quinn::crypto::rustls::QuicServerConfig::try_from(server_crypto)?;
+        let server_config = ServerConfig::with_crypto(Arc::new(quic_server_crypto));
         let endpoint = Endpoint::server(server_config, self.bind_addr)?;
 
         log::info!("[ContinuumNet] QUIC transport listener active on {}", self.bind_addr);
@@ -48,6 +49,7 @@ pub fn validate_handshake_envelope(envelope: &ContinuumEnvelope) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use continuum_core::PayloadType;
 
     #[test]
     fn test_quic_handshake_canary_validation() {
