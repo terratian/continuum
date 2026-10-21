@@ -90,3 +90,5 @@ mod tests {
         assert_eq!(env.canary.sync_token, 1729);
     }
 }
+
+pub mod transcoder;
