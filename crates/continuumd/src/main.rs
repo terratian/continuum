@@ -38,7 +38,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 match incoming.await {
                     Ok(connection) => {
                         log::info!("[ContinuumNet] Established secure QUIC connection with peer: {}", connection.remote_address());
-                        // Handle bidirectional QUIC streams here in future phases
                     }
                     Err(e) => {
                         log::error!("[ContinuumNet] Failed to establish QUIC connection: {}", e);
@@ -83,6 +82,17 @@ async fn main() -> Result<(), Box<dyn Error>> {
             }
         }
     });
+
+    // Test Branch B DID Vault Record & Ownership Transfer Stub (exercising ContinuumDidRecord)
+    let mut sample_did = ContinuumDidRecord::new("did:continuum:sultan01", vec![0xAB, 0xCD], "0xOwnerA");
+    sample_did.register_peer("12D3KooW-SamplePeerID-Crostini");
+    log::info!("[ContinuumDID] Initialized DID Record: {:?}", sample_did);
+    sample_did.transfer_vault_ownership("0xOwnerB_Acquirer");
+    log::info!("[ContinuumDID] Vault Ownership Transferred to: {}", sample_did.vault_token_owner);
+
+    // Test PAM proximity stub initialization (exercising pam_stub)
+    let sample_auth = pam_stub::verify_proximity_auth(-55, true);
+    log::info!("[ContinuumGate] PAM Proximity Auth Test (-55 dBm, Enclave Sig Valid) -> Access: {}", sample_auth);
 
     // 3. Initialize Local SQLite Vault (`ContinuumBuffer`)
     let db_conn = Connection::open("continuum_buffer_vault.db")?;
