@@ -10,6 +10,7 @@ continuum-core = { path = "../continuum-core" }
 continuum-shims = { path = "../continuum-shims" }
 continuum-mobile = { path = "../continuum-mobile" }
 continuum-compute = { path = "../continuum-compute" }
+continuum-did = { path = "../continuum-did" }
 tokio = { version = "1.38", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

@@ -1,0 +1,16 @@
+[package]
+name = "continuum-did"
+version = "0.1.0"
+edition = "2021"
+authors = ["Joshua Sultan"]
+license = "AGPL-3.0-only OR LicenseRef-Continuum-Commercial"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+continuum-core = { path = "../continuum-core" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+ring = "0.17"
+log = "0.4"

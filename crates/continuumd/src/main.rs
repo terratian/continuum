@@ -6,6 +6,7 @@ use continuum_core::{ContinuumEnvelope, PayloadType};
 use continuum_shims::pam_stub;
 use continuum_mobile::mobile_edge_status;
 use continuum_compute::compute_worker_status;
+use continuum_did::{did_registry_status, ContinuumDidRecord};
 use mdns_sd::{ServiceDaemon, ServiceInfo};
 use rusqlite::{params, Connection};
 use std::error::Error;
@@ -20,6 +21,14 @@ async fn main() -> Result<(), Box<dyn Error>> {
     log::info!("[Kernel Shims] {}", continuum_shims::get_shim_status());
     log::info!("[Mobile Edge] {}", mobile_edge_status());
     log::info!("[Compute Shard] {}", compute_worker_status());
+    log::info!("[Trustless DID] {}", did_registry_status());
+
+    // Test Branch B DID Vault Record & Ownership Transfer Stub
+    let mut sample_did = ContinuumDidRecord::new("did:continuum:sultan01", vec![0xAB, 0xCD], "0xOwnerA");
+    sample_did.register_peer("12D3KooW-SamplePeerID-Crostini");
+    log::info!("[ContinuumDID] Initialized DID Record: {:?}", sample_did);
+    sample_did.transfer_vault_ownership("0xOwnerB_Acquirer");
+    log::info!("[ContinuumDID] Vault Ownership Transferred to: {}", sample_did.vault_token_owner);
 
     // Test PAM proximity stub initialization
     let sample_auth = pam_stub::verify_proximity_auth(-55, true);
