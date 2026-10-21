@@ -5,6 +5,7 @@
 use continuum_core::{ContinuumEnvelope, PayloadType};
 use continuum_shims::pam_stub;
 use continuum_mobile::mobile_edge_status;
+use continuum_compute::compute_worker_status;
 use mdns_sd::{ServiceDaemon, ServiceInfo};
 use rusqlite::{params, Connection};
 use std::error::Error;
@@ -18,6 +19,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     log::info!("Inventor: Joshua Sultan | BOIP i-DEPOT Sealed Trade Secret");
     log::info!("[Kernel Shims] {}", continuum_shims::get_shim_status());
     log::info!("[Mobile Edge] {}", mobile_edge_status());
+    log::info!("[Compute Shard] {}", compute_worker_status());
 
     // Test PAM proximity stub initialization
     let sample_auth = pam_stub::verify_proximity_auth(-55, true);

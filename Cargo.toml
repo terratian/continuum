@@ -5,6 +5,7 @@ members = [
     "crates/continuum-net",
     "crates/continuum-shims",
     "crates/continuum-mobile",
+    "crates/continuum-compute",
     "crates/continuumd",
     "crates/continuum-wasm",
 ]
