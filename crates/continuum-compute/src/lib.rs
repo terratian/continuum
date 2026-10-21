@@ -34,3 +34,20 @@ impl ComputeJobManifest {
 pub fn compute_worker_status() -> String {
     "ContinuumCompute Distributed Worker Pool Initialized (wgpu / WASI Sharding Ready)".to_string()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_compute_manifest_creation() {
+        let job = ComputeJobManifest::new(
+            "job-test-001",
+            ComputeTaskType::OpticalCharacterRecognition,
+            "x86_64-gpu",
+            vec![0xAA, 0xBB],
+        );
+        assert_eq!(job.job_id, "job-test-001");
+        assert!(compute_worker_status().contains("ContinuumCompute"));
+    }
+}

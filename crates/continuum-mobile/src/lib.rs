@@ -27,3 +27,16 @@ impl MobileDeviceContext {
         response
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_mobile_device_context() {
+        assert!(mobile_edge_status().contains("Mobile Edge"));
+        let ctx = MobileDeviceContext::new("galaxy-a16-01", "Android");
+        let resp = ctx.generate_biometric_challenge_response(b"test-nonce");
+        assert!(!resp.is_empty());
+    }
+}

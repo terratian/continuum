@@ -36,3 +36,19 @@ impl ContinuumDidRecord {
 pub fn did_registry_status() -> String {
     "ContinuumDID Trustless Layer Initialized (W3C DID + libp2p PeerID Registry Ready)".to_string()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_did_registry_operations() {
+        let mut record = ContinuumDidRecord::new("did:continuum:testnode", vec![0x01], "0xOwnerAlpha");
+        record.register_peer("peer-id-imac");
+        assert_eq!(record.authorized_peer_ids.len(), 1);
+        
+        record.transfer_vault_ownership("0xOwnerBeta");
+        assert_eq!(record.vault_token_owner, "0xOwnerBeta");
+        assert!(did_registry_status().contains("ContinuumDID"));
+    }
+}

@@ -41,3 +41,13 @@ pub fn handle_ipc_message(json_str: &str) -> Result<String, JsValue> {
     serde_json::to_string(&resp)
         .map_err(|e| JsValue::from_str(&format!("JSON Serialize Error: {}", e)))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_wasm_bridge_initialization() {
+        assert!(init_wasm_bridge().contains("Wasm Bridge"));
+    }
+}

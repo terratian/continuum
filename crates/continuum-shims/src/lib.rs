@@ -18,3 +18,18 @@ pub mod pam_stub {
         rssi_dbm >= -65 && biometric_signature_valid
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_shim_status_and_pam() {
+        assert!(get_shim_status().contains("Kernel Shims"));
+        #[cfg(target_os = "linux")]
+        {
+            assert!(pam_stub::verify_proximity_auth(-50, true));
+            assert!(!pam_stub::verify_proximity_auth(-80, true));
+        }
+    }
+}
