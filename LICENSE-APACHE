@@ -1,0 +1,58 @@
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   CONTINUUM TIER 1 SCOPE NOTICE (WIRE PROTOCOL & WASI SDK):
+   Copyright (c) 2026 Joshua Sultan (Burlington, North Carolina, US). All rights reserved.
+
+   This Apache 2.0 License applies STRICTLY AND EXCLUSIVELY to the wire-format
+   protocol definitions (`continuum.proto`) and guest WebAssembly System Interface
+   (`WASI`) plugin client headers designated by the Copyright Holder as Tier 1 SDK
+   components.
+
+   EXPLICIT PATENT BOUNDARY CARVE-OUT:
+    pursuant to Section 3 of the Apache License, Version 2.0, the grant of patent
+   license applies solely to combinations required to implement a compliant Tier 1
+   client plugin interfacing with an authorized Continuum daemon. Nothing in this
+   License grants any license, express or implied, under the Inventor's pending or
+   issued United States or International Patent Claims (including Split-Tunnel
+   Virtual Application Delivery I/O Peeling, vhost-user/VirtIO Kernel Synthesis,
+   In-Transit WASI Ratchet Transcoding, or Dual-Path DID/OAuth Mesh Orchestration)
+   for standalone server daemons, competing synchronization engines, or hosted
+   Virtual Application Delivery (VAD) platforms.
+
+   1. Definitions.
+      "License" shall mean the terms and conditions for use, reproduction, and
+      distribution as defined by Sections 1 through 9 of this document.
+      "Licensor" shall mean Joshua Sultan or an authorized successor-in-interest.
+      "Work" shall mean the Tier 1 SDK files explicitly marked with an
+      `SPDX-License-Identifier: Apache-2.0` header.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of this
+      License, each Contributor hereby grants to You a perpetual, worldwide,
+      non-exclusive, no-charge, royalty-free, irrevocable copyright license to
+      reproduce, prepare Derivative Works of, publicly display, publicly perform,
+      sublicense, and distribute the Work and such Derivative Works in Source or
+      Object form.
+
+   3. Grant of Patent License & Defensive Termination. Subject to the terms and
+      conditions of this License and the Explicit Patent Boundary Carve-Out above,
+      each Contributor hereby grants to You a perpetual, worldwide, non-exclusive,
+      no-charge, royalty-free, irrevocable (except as stated in this section)
+      patent license to make, have made, use, offer to sell, sell, import, and
+      otherwise transfer the Work. If You institute patent litigation against any
+      entity (including a cross-claim or counterclaim in a lawsuit) alleging that
+      the Work or the Continuum Architecture constitutes direct or contributory
+      patent infringement, then any patent licenses granted to You under this
+      License for that Work shall terminate as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the Work or
+      Derivative Works thereof in any medium, with or without modifications,
+      provided that You retain all copyright, patent, trademark, and attribution
+      notices from the Source form of the Work, including the forensic wire-format
+      compatibility fields (`419`, `882`, `1729`) required for protocol validation.
+
+   5. Disclaimer of Warranty & Limitation of Liability. THE WORK IS PROVIDED ON AN
+      "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS
+      OR IMPLIED, INCLUDING, WITHOUT LIMITATION, ANY WARRANTIES OR CONDITIONS OF
+      TITLE, NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE.
