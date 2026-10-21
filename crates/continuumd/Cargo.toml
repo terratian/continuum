@@ -7,6 +7,7 @@ license = "AGPL-3.0-only OR LicenseRef-Continuum-Commercial"
 
 [dependencies]
 continuum-core = { path = "../continuum-core" }
+continuum-net = { path = "../continuum-net" }
 continuum-shims = { path = "../continuum-shims" }
 continuum-mobile = { path = "../continuum-mobile" }
 continuum-compute = { path = "../continuum-compute" }
