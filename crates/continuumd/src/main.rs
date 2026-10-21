@@ -3,6 +3,8 @@
 // Trade Secret / Unfiled Architecture (Benelux BOIP i-DEPOT & SHA-256 Sealed).
 
 use continuum_core::{ContinuumEnvelope, PayloadType};
+use continuum_shims::pam_stub;
+use continuum_mobile::mobile_edge_status;
 use mdns_sd::{ServiceDaemon, ServiceInfo};
 use rusqlite::{params, Connection};
 use std::error::Error;
@@ -14,6 +16,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init();
     log::info!("Starting Continuum Core Daemon (continuumd) v0.1.0...");
     log::info!("Inventor: Joshua Sultan | BOIP i-DEPOT Sealed Trade Secret");
+    log::info!("[Kernel Shims] {}", continuum_shims::get_shim_status());
+    log::info!("[Mobile Edge] {}", mobile_edge_status());
+
+    // Test PAM proximity stub initialization
+    let sample_auth = pam_stub::verify_proximity_auth(-55, true);
+    log::info!("[ContinuumGate] PAM Proximity Auth Test (-55 dBm, Enclave Sig Valid) -> Access: {}", sample_auth);
 
     // 1. Initialize Local SQLite Vault (`ContinuumBuffer`)
     let db_conn = Connection::open("continuum_buffer_vault.db")?;
