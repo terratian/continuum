@@ -1,0 +1,4 @@
+/target
+/.ip_vault/*.tar.gz
+!.ip_vault/*.ots
+.env
