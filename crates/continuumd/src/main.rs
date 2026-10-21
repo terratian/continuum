@@ -36,13 +36,14 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let ip = IpAddr::V4("127.0.0.1".parse()?);
     let port = 7419;
 
+    let properties = [("version", "0.1.0"), ("author", "joshua-sultan")];
     let service_info = ServiceInfo::new(
         service_type,
         host_name,
         &host_name,
         ip,
         port,
-        &[("version", "0.1.0"), ("author", "joshua-sultan")],
+        &properties[..],
     )?;
 
     mdns.register(service_info)?;
