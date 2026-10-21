@@ -1,0 +1,5 @@
+# CONTINUUM INDIVIDUAL & CORPORATE CONTRIBUTOR LICENSE AGREEMENT (CLA)
+To ensure that **Joshua Sultan** (and any future corporate entity or acquirer to whom the Continuum IP is transferred) retains the unilateral legal authority to dual-license Continuum under both `AGPLv3` and `LICENSE-COMMERCIAL.md`, every external contributor submitting a Pull Request or patch must agree to the following terms:
+
+1. **Grant of Unilateral Relicensing Rights:** You hereby grant to Joshua Sultan and his successors and assigns a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright and patent license to reproduce, modify, sublicense, and re-license your contribution under *any* license terms (including proprietary commercial OEM licenses and future open-source licenses).
+2. **Originality & No Third-Party Taint:** You represent that your contribution is your original creation and does not include code copied from incompatible third-party copyleft sources that would restrict commercial relicensing or corporate acquisition of the Continuum repository.

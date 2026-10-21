@@ -274,12 +274,40 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3d52eff69cd5e647efe296129160853a42795992097e8af39800e1060caeea9b"
 
 [[package]]
+name = "continuum-compute"
+version = "0.1.0"
+dependencies = [
+ "continuum-core",
+ "log",
+ "serde",
+]
+
+[[package]]
 name = "continuum-core"
 version = "0.1.0"
 dependencies = [
  "blake3",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "continuum-did"
+version = "0.1.0"
+dependencies = [
+ "continuum-core",
+ "log",
  "ring",
  "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "continuum-mobile"
+version = "0.1.0"
+dependencies = [
+ "continuum-core",
+ "log",
 ]
 
 [[package]]
@@ -309,6 +337,8 @@ name = "continuum-wasm"
 version = "0.1.0"
 dependencies = [
  "continuum-core",
+ "serde",
+ "serde_json",
  "wasm-bindgen",
 ]
 
@@ -317,7 +347,12 @@ name = "continuumd"
 version = "0.1.0"
 dependencies = [
  "arboard",
+ "continuum-compute",
  "continuum-core",
+ "continuum-did",
+ "continuum-mobile",
+ "continuum-net",
+ "continuum-shims",
  "env_logger",
  "hex",
  "log",
