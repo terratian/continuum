@@ -2,6 +2,7 @@
 resolver = "2"
 members = [
     "crates/continuum-core",
+    "crates/continuum-net",
     "crates/continuumd",
     "crates/continuum-wasm",
 ]
