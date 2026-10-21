@@ -67,7 +67,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
     mdns.register(service_info)?;
     log::info!("[mDNS] Broadcasted service {} on port {}", service_type, port);
 
-    // Start mDNS Browse Receiver for discovering LAN peers
     let receiver = mdns.browse(service_type)?;
     tokio::spawn(async move {
         while let Ok(event) = receiver.recv_async().await {
@@ -83,14 +82,14 @@ async fn main() -> Result<(), Box<dyn Error>> {
         }
     });
 
-    // Test Branch B DID Vault Record & Ownership Transfer Stub (exercising ContinuumDidRecord)
+    // Test Branch B DID Vault Record & Ownership Transfer Stub
     let mut sample_did = ContinuumDidRecord::new("did:continuum:sultan01", vec![0xAB, 0xCD], "0xOwnerA");
     sample_did.register_peer("12D3KooW-SamplePeerID-Crostini");
     log::info!("[ContinuumDID] Initialized DID Record: {:?}", sample_did);
     sample_did.transfer_vault_ownership("0xOwnerB_Acquirer");
     log::info!("[ContinuumDID] Vault Ownership Transferred to: {}", sample_did.vault_token_owner);
 
-    // Test PAM proximity stub initialization (exercising pam_stub)
+    // Test PAM proximity stub initialization
     let sample_auth = pam_stub::verify_proximity_auth(-55, true);
     log::info!("[ContinuumGate] PAM Proximity Auth Test (-55 dBm, Enclave Sig Valid) -> Access: {}", sample_auth);
 
@@ -108,13 +107,22 @@ async fn main() -> Result<(), Box<dyn Error>> {
     )?;
     log::info!("[ContinuumBuffer] SQLite vault initialized successfully.");
 
-    // 4. Start Local Clipboard Polling & Sync Loop
-    let mut clipboard = arboard::Clipboard::new().unwrap_or_else(|_| {
-        log::warn!("[ContinuumBuffer] Headless environment detected; fallback clipboard initialized.");
-        panic!("Unable to access native clipboard API.");
-    });
+    // 4. Start Local Clipboard Polling & Sync Loop (Graceful Headless Fallback)
+    let mut clipboard_opt = match arboard::Clipboard::new() {
+        Ok(cb) => {
+            log::info!("[ContinuumBuffer] Native pasteboard access initialized successfully.");
+            Some(cb)
+        }
+        Err(_) => {
+            log::warn!("[ContinuumBuffer] Headless environment detected (no display server). Operating in headless sync-node mode.");
+            None
+        }
+    };
 
-    let mut last_text = clipboard.get_text().unwrap_or_default();
+    let mut last_text = String::new();
+    if let Some(ref mut cb) = clipboard_opt {
+        last_text = cb.get_text().unwrap_or_default();
+    }
     log::info!("[ContinuumBuffer] Monitoring system pasteboard for deltas...");
 
     let mut interval = tokio::time::interval(Duration::from_millis(500));
@@ -122,23 +130,25 @@ async fn main() -> Result<(), Box<dyn Error>> {
     loop {
         interval.tick().await;
 
-        if let Ok(current_text) = clipboard.get_text() {
-            if current_text != last_text && !current_text.is_empty() {
-                log::info!("[ContinuumBuffer] Pasteboard delta detected! Length: {} bytes", current_text.len());
-                last_text = current_text.clone();
+        if let Some(ref mut cb) = clipboard_opt {
+            if let Ok(current_text) = cb.get_text() {
+                if current_text != last_text && !current_text.is_empty() {
+                    log::info!("[ContinuumBuffer] Pasteboard delta detected! Length: {} bytes", current_text.len());
+                    last_text = current_text.clone();
 
-                let envelope = ContinuumEnvelope::new(
-                    PayloadType::ClipboardText,
-                    host_name.to_string(),
-                    current_text.as_bytes().to_vec(),
-                );
+                    let envelope = ContinuumEnvelope::new(
+                        PayloadType::ClipboardText,
+                        host_name.to_string(),
+                        current_text.as_bytes().to_vec(),
+                    );
 
-                db_conn.execute(
-                    "INSERT INTO clipboard_history (sender_id, payload_type, content, timestamp) VALUES (?1, ?2, ?3, ?4)",
-                    params![envelope.sender_id, "ClipboardText", current_text, envelope.timestamp_epoch_ms],
-                )?;
+                    db_conn.execute(
+                        "INSERT INTO clipboard_history (sender_id, payload_type, content, timestamp) VALUES (?1, ?2, ?3, ?4)",
+                        params![envelope.sender_id, "ClipboardText", current_text, envelope.timestamp_epoch_ms],
+                    )?;
 
-                log::info!("[ContinuumBuffer] Envelope hashed (BLAKE3: hex={}) & stored in local vault.", hex::encode(envelope.compute_hash()));
+                    log::info!("[ContinuumBuffer] Envelope hashed (BLAKE3: hex={}) & stored in local vault.", hex::encode(envelope.compute_hash()));
+                }
             }
         }
     }
