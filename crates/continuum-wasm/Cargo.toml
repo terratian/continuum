@@ -1,0 +1,13 @@
+[package]
+name = "continuum-wasm"
+version = "0.1.0"
+edition = "2021"
+authors = ["Joshua Sultan"]
+license = "AGPL-3.0-only OR LicenseRef-Continuum-Commercial"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+continuum-core = { path = "../continuum-core" }
+wasm-bindgen = "0.2"
